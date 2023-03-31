@@ -79,17 +79,10 @@ def seed_cells(num_agents, center, radius):
     locations = np.hstack((x, y, z))
     return locations
 
-def calculate_rate(combined_percent, end_step):
-    return 1 - np.power(1-combined_percent, 1/end_step)
-
-def calculate_transition_rate(combined_percent, t):
-    transition_rate = 1 - (1-combined_percent) ** t
-    return transition_rate
-
 def activator_inhibitor_equal(activator, inhibitor, buffer):
     return (np.abs(activator - inhibitor)) < buffer
 
-class TestSimulation(Simulation):
+class RD1Simulation(Simulation):
     """ This class inherits the Simulation class allowing it to run a
         simulation with the proper functionality.
     """
@@ -551,7 +544,7 @@ def parameter_sweep_abm(par,
         "noise": noise
     }
     name = f'033023_RD1_60%green_40%blue_{par}'
-    sim = TestSimulation(model_params)
+    sim = RD1Simulation(model_params)
     sim.start_sweep(directory + '/outputs', model_params, name)
     return par, sim.image_quality, sim.image_quality, 3, final_ts/sim.sub_ts
 
@@ -580,22 +573,5 @@ if __name__ == "__main__":
                             growth_timer=128,
                             final_ts=200,
                             sub_ts=10)
-    # a = parameter_sweep_abm(0, "/Users/andrew/PycharmProjects/AIM_RD_D+all_Modulator_Source_cells/",
-    #                         [0.01, 0.4, 0.4], 0.5, 1, 2.5, '3D', final_ts=72, sub_ts=10)
-    # diffA = [0.01, 0.1, 0.2, 0.4]
-    # diffI = [0.01, 0.1, 0.2, 0.4]
-    # diffM = [0.01, 0.1, 0.2, 0.4]
-    # for i in diffA:
-    #     for j in diffI:
-    #         for k in diffM:
-    #             a = parameter_sweep_abm(0, "/Users/andrew/PycharmProjects/AIM_RD_D+all_Modulator_Source_cells/",
-    #                                     [i, j, k], 0.5, 1, 2.5, '3D', final_ts=72, sub_ts=10)
-
-    # noise = [0, 0.1, 0.25, 0.5, 1, 2]
-    # buffer = [0, 0.1, 0.25, 0.5, 1]
-    # for i in noise:
-    #     for j in buffer:
-    #         a = parameter_sweep_abm(0, "/Users/andrew/PycharmProjects/AIM_RD_D+all_Modulator_Source_cells/", [0.01, 0.2, 0.4],
-    #                                 i, j, 1.9, 10, '3D', final_ts=60, sub_ts=10)
     print(a)
 
